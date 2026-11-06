@@ -1,0 +1,101 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Student Marks Analyzer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>🎓 Student Marks Analyzer</h1>
+        <p>Analyze student academic performance instantly</p>
+    </header>
+
+    <div class="card">
+        <h2>Enter Student Details</h2>
+
+        <form method="POST">
+            <label>Student Name</label>
+            <input type="text" name="name"
+                   placeholder="Enter student name" required>
+
+            <div class="subjects">
+                <div>
+                    <label>Python Marks</label>
+                    <input type="number" name="python" min="0" max="100" required>
+                </div>
+                <div>
+                    <label>Java Marks</label>
+                    <input type="number" name="java" min="0" max="100" required>
+                </div>
+                <div>
+                    <label>SQL Marks</label>
+                    <input type="number" name="sql" min="0" max="100" required>
+                </div>
+                <div>
+                    <label>Maths Marks</label>
+                    <input type="number" name="maths" min="0" max="100" required>
+                </div>
+                <div>
+                    <label>English Marks</label>
+                    <input type="number" name="english" min="0" max="100" required>
+                </div>
+            </div>
+
+            <button type="submit">Analyze Performance</button>
+            <button type="reset" class="reset">Clear Form</button>
+        </form>
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+    </div>
+
+    {% if result %}
+    <div class="result">
+        <h2>Performance Report</h2>
+        <h3>{{ result.name }}</h3>
+
+        <div class="stats">
+            <div class="stat">
+                <h3>{{ result.total }}/500</h3>
+                <p>Total Marks</p>
+            </div>
+            <div class="stat">
+                <h3>{{ result.average }}%</h3>
+                <p>Percentage</p>
+            </div>
+            <div class="stat">
+                <h3>{{ result.grade }}</h3>
+                <p>Grade</p>
+            </div>
+            <div class="stat">
+                <h3>{{ result.status }}</h3>
+                <p>Result</p>
+            </div>
+        </div>
+
+        <h3>Subject Performance</h3>
+
+        {% for subject, mark in result.subjects.items() %}
+        <div class="subject-row">
+            <span>{{ subject }}</span>
+            <strong>{{ mark }}/100</strong>
+        </div>
+        {% endfor %}
+
+        <p>🏆 Highest: {{ result.highest }}</p>
+        <p>📉 Lowest: {{ result.lowest }}</p>
+
+        <button onclick="window.print()">Download / Print Report</button>
+    </div>
+    {% endif %}
+
+</div>
+
+</body>
+</html>
